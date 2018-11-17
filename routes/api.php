@@ -18,5 +18,6 @@ Route::post('register','PassportController@register');
 
 Route::middleware('auth:api')->group(function () {
     Route::resource('ride','RideController');
+    Route::resource('city','CitysController');
     Route::get('user/','PassportController@detail');
 });
