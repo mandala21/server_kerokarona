@@ -24,7 +24,7 @@ class RideController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -35,7 +35,23 @@ class RideController extends Controller
      */
     public function store(Request $request)
     {
+        //validate request
+        $this->validate($request, [
+            'from'=>'required|string',
+            'to'=>'required|string',
+            'day'=>'required|date_format:"d/m/Y"',
+            'hour'=>'required|date_format:"H:i"',
+            'spaces'=>'required|integer',
+            'price'=>'required|numeric',
+        ]);
         
+        //create data
+        $data = $request->all();
+        $data['user_id'] = $request->user()->id;
+        //make entitie
+        $ride = Ride::create($data);
+        //return intitie was created with http code 201
+        return response()->json($ride,201);
     }
 
     /**
@@ -85,5 +101,25 @@ class RideController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Find resource with filter by from, to and day
+     * 
+     * @param String $from
+     * @param String $to
+     * @param Date $day
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(){
+        //format day
+        $day = isset($_GET['day']) ? date('Y-m-d', strtotime($_GET['day'])) : False;
+        if($day){
+            //make query
+            $ride = Ride::where([['from','=',$_GET['from']],['to','=',$_GET['to']],['day','=',$day]])->get();
+        } else {
+            $ride = Ride::where([['from','=',$_GET['from']],['to','=',$_GET['to']]])->get();
+        }
+        return response()->json($ride,200);
     }
 }

@@ -17,7 +17,13 @@ Route::post('login','PassportController@login');
 Route::post('register','PassportController@register');
 
 Route::middleware('auth:api')->group(function () {
+    //rides
+    Route::get('ride/filter','RideController@filter')->name('ride.filter');
     Route::resource('ride','RideController');
+
+    //citys
     Route::resource('city','CitysController');
+
+    //user detail
     Route::get('user/','PassportController@detail');
 });
