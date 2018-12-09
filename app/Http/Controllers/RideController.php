@@ -104,7 +104,7 @@ class RideController extends Controller
     }
 
     /**
-     * Find resource with filter by from, to and day
+     * Find resource with filter by from, to and day, paramns will get from url paramns (?day=...)
      * 
      * @param String $from
      * @param String $to
@@ -121,5 +121,17 @@ class RideController extends Controller
             $ride = Ride::where([['from','=',$_GET['from']],['to','=',$_GET['to']]])->get();
         }
         return response()->json($ride,200);
+    }
+
+    /**
+     * Retrun all rides where id_user equals a request user and date and equals < now
+     * @return \Illuminate\Http\Response
+     */
+    public function history(Request $request){
+        return Ride::where([
+            ['user_id','=',$request->user()->id],
+            ['day','>=',date('Y-m-d')],
+            ['hour','>=',date('h:m:s')],
+        ])->get();
     }
 }

@@ -36,6 +36,16 @@ class Ride extends Model
     public function setDayAttribute($value){
         return $this->attributes['day'] = date("Y-m-d", strtotime($value));
     }
+    
+    /**
+     * Acessor of day value
+     * 
+     * @return String
+     */
+    public function getPriceAttribute($value){
+        $number_formated = number_format($value,2,',','.');
+        return "R$ $number_formated";
+    } 
 
     /**
      * Acessor of day value

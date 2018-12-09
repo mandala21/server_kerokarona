@@ -19,6 +19,7 @@ Route::post('register','PassportController@register');
 Route::middleware('auth:api')->group(function () {
     //rides
     Route::get('ride/filter','RideController@filter')->name('ride.filter');
+    Route::get('ride/history','RideController@history')->name('ride.history');
     Route::resource('ride','RideController');
 
     //citys
